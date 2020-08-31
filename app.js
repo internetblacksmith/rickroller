@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(detector.middleware());
 
 app.use('/', indexRouter);
-app.use('/:videoId', videoRouter);
+app.use('/v', videoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
