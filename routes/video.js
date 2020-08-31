@@ -14,6 +14,7 @@ router.get('/', async function(req, res, next) {
   }
   const { error, result, response } = await ogs(options);
   if (req.isSpider()) {
+    console.log(error)
     res.render('video', {
       title: 'Video',
       result: result,
