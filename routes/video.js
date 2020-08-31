@@ -12,16 +12,21 @@ router.get('/', async function(req, res, next) {
 		  { multiple: true,  property: "og:video:tag", fieldName: "ogVideoTag" }
 		  ]
   }
-  const { error, result, response } = await ogs(options);
-  if (req.isSpider()) {
-    console.log(error)
-    res.render('video', {
-      title: 'Video',
-      result: result,
-      layout: false
-    });
-  } else {
-    res.redirect(302, "https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1")
+  try {
+    const { error, result, response } = await ogs(options);
+    if (req.isSpider()) {
+      console.log(error)
+      res.render('video', {
+        title: 'Video',
+        result: result,
+        layout: false
+      });
+    } else {
+      res.redirect(302, "https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1")
+    }
+  } catch(err) {
+    console.log(err)
+    res.send("ERROR")
   }
 });
 
