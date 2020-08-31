@@ -20,7 +20,7 @@ router.get('/', async function(req, res, next) {
       layout: false
     });
   } else {
-    res.redirect(302, "https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1")
+    res.redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1")
   }
 });
 

@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    
+
     meta( name="twitter:app:id:googleplay",   content=result.twitterAppIdGooglePlay )   
     meta( name="twitter:app:id:ipad",         content=result.twitterAppIdiPad )
     meta( name="twitter:app:id:iphone",       content=result.twitterAppIdiPhone )
@@ -13,10 +13,12 @@ html
     meta( name="twitter:app:url:iphone",      content=result.twitterAppUrliPhone )
     meta( name="twitter:card",                content=result.twitterCard )
     meta( name="twitter:description",         content=result.twitterDescription)
-    meta( name="twitter:image",               content=result.twitterImage.url )
-    meta( name="twitter:player",              content=result.twitterPlayer.url )
-    meta( name="twitter:player:height",       content=result.twitterPlayer.height )
-    meta( name="twitter:player:width",        content=result.twitterPlayer.width )
+    if result.twitterImage != null
+      meta( name="twitter:image",               content=result.twitterImage.url )
+    if result.twitterPlayer != null
+      meta( name="twitter:player",              content=result.twitterPlayer.url )
+      meta( name="twitter:player:height",       content=result.twitterPlayer.height )
+      meta( name="twitter:player:width",        content=result.twitterPlayer.width )
     meta( name="twitter:site",                content=result.twitterSite )
     meta( name="twitter:title",               content=result.twitterTitle )
     meta( name="twitter:url",                 content=result.twitterUrl )
@@ -29,20 +31,24 @@ html
     meta( property="al:web:url",              content=result.alWebUrl )
     meta( property="fb:app_id",               content=result.fbAppId )
     meta( property="og:description",          content=result.ogDescription )
-    meta( property="og:image",                content=result.ogImage.url )
-    meta( property="og:image:height",         content=result.ogImage.height )
-    meta( property="og:image:width",          content=result.ogImage.width )
+    if result.ogImage != null
+      meta( property="og:image",                content=result.ogImage.url )
+      meta( property="og:image:height",         content=result.ogImage.height )
+      meta( property="og:image:width",          content=result.ogImage.width )
     meta( property="og:site_name",            content=result.ogSiteName )
     meta( property="og:title",                content=result.ogTitle )
     meta( property="og:type",                 content=result.ogType )
     meta( property="og:url",                  content=result.ogUrl )
     meta( property="og:video:secure_url",     content=result.ogVideoSecureUrl )
-    meta( property="og:video:height",         content=result.ogVideo.height )
-    meta( property="og:video:url",            content=result.ogVideo.url )
-    meta( property="og:video:width",          content=result.ogVideo.width )
-    each tag in result.ogVideoTag
-      meta( property="og:video:tag",            content=tag )
-    meta( property="og:video:type",           content=result.ogVideo.type )
+    if result.ogVideo != null
+      meta( property="og:video:height",         content=result.ogVideo.height )
+      meta( property="og:video:url",            content=result.ogVideo.url )
+      meta( property="og:video:width",          content=result.ogVideo.width )
+    if result.ogVideoTag != null
+      each tag in result.ogVideoTag
+        meta( property="og:video:tag",            content=tag )
+    if result.ogVideo != null
+      meta( property="og:video:type",           content=result.ogVideo.type )
 
 body
     h1= title
