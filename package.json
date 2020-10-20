@@ -12,7 +12,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "open-graph-scraper": "^4.5.1",
+    "open-graph-scraper": "^4.6.0",
     "spider-detector": "^2.0.0"
   }
 }
