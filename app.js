@@ -7,12 +7,15 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const videoRouter = require('./routes/video');
+const healthRouter = require('./routes/health');
+const debugRouter = require('./routes/debug');
+const { generalLimiter, videoLimiter } = require('./middleware/rateLimiter');
 
 const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,10 +23,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(detector.middleware());
+// Use enhanced spider detection
+const { enhancedSpiderDetector } = require('./middleware/spiderDetector');
+app.use(enhancedSpiderDetector());
+
+// Apply rate limiting
+app.use(generalLimiter);
 
 app.use('/', indexRouter);
-app.use('/v', videoRouter);
+app.use('/v', videoLimiter, videoRouter);
+app.use('/health', healthRouter);
+app.use('/debug', debugRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
