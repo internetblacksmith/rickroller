@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rickroller Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-link { display: block; margin: 10px 0; padding: 10px; background: #f0f0f0; }
+        .results { margin-top: 20px; padding: 20px; background: #e0e0e0; }
+        button { margin: 5px; padding: 5px 15px; }
+    </style>
+</head>
+<body>
+    <h1>Rickroller Test Page</h1>
+    
+    <h2>Test Links</h2>
+    <a href="/v/dQw4w9WgXcQ" class="test-link">Standard Redirect</a>
+    <a href="/v/dQw4w9WgXcQ?method=meta" class="test-link">Meta Refresh Redirect</a>
+    <a href="/v/dQw4w9WgXcQ?method=js" class="test-link">JavaScript Redirect</a>
+    <a href="/v/test/dQw4w9WgXcQ/human" class="test-link">Force Human (should redirect)</a>
+    <a href="/v/test/dQw4w9WgXcQ/spider" class="test-link">Force Spider (should show metadata)</a>
+    
+    <h2>Debug Info</h2>
+    <button onclick="checkDebugInfo()">Check Debug Info</button>
+    <button onclick="testRedirect()">Test Redirect in iframe</button>
+    
+    <div class="results" id="results"></div>
+    
+    <h2>Share Test Links</h2>
+    <p>Copy these to test on social media:</p>
+    <input type="text" value="" id="shareUrl" style="width: 100%; padding: 5px;" readonly>
+    <button onclick="copyShareUrl('dQw4w9WgXcQ')">Rick Roll Link</button>
+    <button onclick="copyShareUrl('jNQXAC9IVRw')">First YouTube Video</button>
+    <button onclick="copyShareUrl('kJQP7kiw5Fk')">Despacito</button>
+    
+    <iframe id="testFrame" style="display:none;"></iframe>
+    
+    <script>
+        async function checkDebugInfo() {
+            try {
+                const response = await fetch('/debug/test/dQw4w9WgXcQ');
+                const data = await response.json();
+                document.getElementById('results').innerHTML = 
+                    '<h3>Debug Info:</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                document.getElementById('results').innerHTML = 
+                    '<h3>Error:</h3><pre>' + error.message + '</pre>';
+            }
+        }
+        
+        function testRedirect() {
+            const frame = document.getElementById('testFrame');
+            frame.style.display = 'block';
+            frame.style.width = '100%';
+            frame.style.height = '300px';
+            frame.src = '/v/dQw4w9WgXcQ';
+            
+            setTimeout(() => {
+                document.getElementById('results').innerHTML = 
+                    '<h3>Iframe Test:</h3>' +
+                    '<p>Current src: ' + frame.src + '</p>' +
+                    '<p>If redirect worked, you should see YouTube in the iframe.</p>';
+            }, 1000);
+        }
+        
+        function copyShareUrl(videoId) {
+            const url = window.location.origin + '/v/' + videoId;
+            const input = document.getElementById('shareUrl');
+            input.value = url;
+            input.select();
+            document.execCommand('copy');
+            alert('Copied: ' + url);
+        }
+        
+        // Auto-check on load
+        window.onload = () => {
+            checkDebugInfo();
+        };
+    </script>
+</body>
+</html>
