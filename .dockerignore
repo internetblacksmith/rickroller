@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+yarn-error.log
+.git
+.gitignore
+.eslintrc*
+.prettierrc
+README.md
+Dockerfile
+docker-compose.yml
+.env
+.env.*
+coverage
+.nyc_output
+.vscode
+.idea
+logs/*.log
