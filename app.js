@@ -21,7 +21,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Only serve static files (including test.html) in development
+if (app.get('env') === 'development') {
+  app.use(express.static(path.join(__dirname, 'public')));
+} else {
+  // In production, only serve stylesheets
+  app.use('/stylesheets', express.static(path.join(__dirname, 'public', 'stylesheets')));
+}
 
 // Use enhanced spider detection
 const { enhancedSpiderDetector } = require('./middleware/spiderDetector');
@@ -33,7 +39,10 @@ app.use(generalLimiter);
 app.use('/', indexRouter);
 app.use('/v', videoLimiter, videoRouter);
 app.use('/health', healthRouter);
-app.use('/debug', debugRouter);
+// Only enable debug routes in development
+if (app.get('env') === 'development') {
+  app.use('/debug', debugRouter);
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
