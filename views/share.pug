@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  .container(style='max-width: 600px; margin: 50px auto; padding: 20px;')
+    h1= title
+    p Create a rickroll link that shows the real video preview on social media!
+    
+    if error
+      .alert(style='background: #fee; border: 1px solid #fcc; color: #c00; padding: 10px; margin: 20px 0; border-radius: 4px;')
+        = error
+    
+    if !success
+      form(method='POST' action='/share')
+        .form-group(style='margin: 20px 0;')
+          label(for='videoId' style='display: block; margin-bottom: 5px;') YouTube Video ID:
+          input#videoId(
+            type='text' 
+            name='videoId' 
+            value=videoId
+            placeholder='e.g. dQw4w9WgXcQ'
+            required
+            pattern='[a-zA-Z0-9_-]{11}'
+            style='width: 100%; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px;'
+          )
+          small(style='color: #666; display: block; margin-top: 5px;') 
+            | Enter the 11-character YouTube video ID from the URL
+            br
+            | Example: For youtube.com/watch?v=
+            strong dQw4w9WgXcQ
+            |  → use 
+            strong dQw4w9WgXcQ
+        
+        button(type='submit' style='background: #ff0000; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;') 
+          | Generate Rickroll Link
+    
+    if success
+      .success(style='background: #efe; border: 1px solid #cfc; color: #060; padding: 20px; margin: 20px 0; border-radius: 4px;')
+        h2 Success! Your rickroll link is ready:
+        
+        .url-display(style='background: #f5f5f5; padding: 15px; margin: 15px 0; border-radius: 4px; word-break: break-all; font-family: monospace;')
+          = shareUrl
+        
+        button(onclick=`navigator.clipboard.writeText('${shareUrl}').then(() => alert('Copied to clipboard!'))` style='background: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;')
+          | Copy to Clipboard
+        
+        a(href=shareUrl target='_blank' style='background: #28a745; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;')
+          | Test Link
+        
+        h3(style='margin-top: 30px;') Important: Pre-warm Social Media Cache
+        p To ensure WhatsApp and other platforms show the video preview:
+        
+        ol
+          li 
+            a(href=facebookDebugUrl target='_blank' style='color: #007bff;') 
+              | Click here to open Facebook Sharing Debugger
+          li Click "Fetch new scrape information" on the Facebook page
+          li Wait for Facebook to fetch the metadata
+          li Your link is now ready to share on WhatsApp!
+        
+        .note(style='background: #fef; border: 1px solid #fcf; color: #606; padding: 15px; margin: 20px 0; border-radius: 4px;')
+          strong Note: 
+          | The link will show the real video's title and thumbnail to bots (WhatsApp, Facebook, etc.) 
+          | but redirect humans to Rick Astley when they click it!
+        
+        a(href='/share' style='display: inline-block; margin-top: 20px; color: #007bff;') ← Create another link
