@@ -9,6 +9,7 @@ const indexRouter = require('./routes/index');
 const videoRouter = require('./routes/video');
 const healthRouter = require('./routes/health');
 const debugRouter = require('./routes/debug');
+const shareRouter = require('./routes/share');
 const { generalLimiter, videoLimiter } = require('./middleware/rateLimiter');
 
 const app = express();
@@ -39,6 +40,7 @@ app.use(generalLimiter);
 app.use('/', indexRouter);
 app.use('/v', videoLimiter, videoRouter);
 app.use('/health', healthRouter);
+app.use('/share', shareRouter);
 // Only enable debug routes in development
 if (app.get('env') === 'development') {
   app.use('/debug', debugRouter);
