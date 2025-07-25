@@ -63,3 +63,22 @@ block content
           | but redirect humans to Rick Astley when they click it!
         
         a(href='/share' style='display: inline-block; margin-top: 20px; color: #007bff;') ← Create another link
+    
+    script.
+      // Automatically warm the cache when the page loads with a success message
+      if (#{success} && '#{videoId}') {
+        fetch('/api/warm-cache/#{videoId}', { method: 'POST' })
+          .then(res => res.json())
+          .then(data => {
+            console.log('Cache warmed:', data);
+            if (data.status === 'cached' || data.status === 'already_cached') {
+              // Add a small success indicator
+              const indicator = document.createElement('div');
+              indicator.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #28a745; color: white; padding: 10px 20px; border-radius: 4px; font-size: 14px;';
+              indicator.textContent = '✓ Metadata cached successfully';
+              document.body.appendChild(indicator);
+              setTimeout(() => indicator.remove(), 3000);
+            }
+          })
+          .catch(err => console.error('Cache warming failed:', err));
+      }
