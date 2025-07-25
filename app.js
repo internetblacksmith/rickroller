@@ -25,9 +25,17 @@ app.use(cookieParser());
 // Only serve static files (including test.html) in development
 if (app.get('env') === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
+  // Rename test.html.dev back to test.html for development
+  app.get('/test.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'test.html.dev'));
+  });
 } else {
   // In production, only serve stylesheets
   app.use('/stylesheets', express.static(path.join(__dirname, 'public', 'stylesheets')));
+  // Explicitly block test.html in production
+  app.get('/test.html', (req, res) => {
+    res.status(404).send('Not Found');
+  });
 }
 
 // Use enhanced spider detection
